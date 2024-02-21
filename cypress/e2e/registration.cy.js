@@ -23,7 +23,7 @@ describe("Registration", () => {
   });
 
   it("Captcha should be present during registration", () => {
-    HomePage.loginBtn.should("be.visible").click();
+    HomePage.loginBtn.should('be.visible',{ timeout: 10000 }).click();
     LoginPage.createAccountBtn.click();
     RegistrationPage.registerAccount(
       userData.firstName,

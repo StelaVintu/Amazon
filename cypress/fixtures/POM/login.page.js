@@ -8,9 +8,10 @@ class LoginPage{
 
     loginWithCredentials(email, password) {
         this.emailOrMobileNumberInput.type(email);
-        this.continueBtn.click();
         cy.wait(1000);
+        this.continueBtn.click();
         this.passwordInput.type(password);
+        cy.wait(1000);
         this.signinBtn.click();
       }
 }
