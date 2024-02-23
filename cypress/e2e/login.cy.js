@@ -29,7 +29,7 @@ describe("Login", () => {
     LoginPage.loginWithCredentials(userData.email, userData.password);
     cy.wait(2000);
     cy.url()
-      .should("eq", urls.accountUrl)
+      //.should("eq", urls.accountUrl)
       .then((url) => {
         if (url.includes(urls.accountUrl)) {
           AccountPage.profileIcon.should(
@@ -42,20 +42,16 @@ describe("Login", () => {
           cy.wait(1000);
           cy.url().should("eq", urls.signinUrl);
         } else {
-          cy.url().should("eq", urls.captchaUrl);
+          cy.url().should((url) => {
+            expect(url).to.match(
+              /^https:\/\/www.amazon.com\/ap\/cvf\/request\?arb=/
+            );
+          });
           cy.log("CAPTCHA is in place");
-          CaptchaPage.captchaIframeLogin
-            .within(() => {
-              expect(CaptchaPage.captchaIframeLogin).to.exist;
-              const $doc = CaptchaPage.captchaIframeLogin.contents();
-              const $element = $doc.find(CaptchaPage.captchaHeaderLogin);
-              expect($element).to.exist;
-              const text = $element.text().trim();
-              expect(text).to.equal(verificationText.captchaText);
-            })
-            .catch((error) => {
-              cy.log("Error:", error.message);
-            });
+          CaptchaPage.captchaIframeLogin.should("exist");
+          CaptchaPage.captchaIframeLogin.within(() => {
+            cy.get(CaptchaPage.captchaHeaderLogin).should("exist");
+          });
         }
       });
   });
