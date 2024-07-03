@@ -23,15 +23,14 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
 Cypress.Commands.add("login", (email, password) => {
-    // Your login logic here
     HomePage.loginBtn.should('be.visible', { timeout: 10000 }).click();
     LoginPage.loginWithCredentials(email, password);
     cy.wait(2000);
   });
   
   Cypress.Commands.add("logout", () => {
-    // Your logout logic here
     cy.get(AccountPage.accountBtn).trigger('mouseover');
     cy.wait(2000);
     cy.get(AccountPage.accountBtnDropdownMenu.last()).click({ force: true });
